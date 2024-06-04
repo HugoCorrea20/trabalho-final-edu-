@@ -57,6 +57,7 @@ public class jogador : MonoBehaviour
 
 
 
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -81,6 +82,16 @@ public class jogador : MonoBehaviour
     {
         heatltbarScale.x = heathpercent * currentHealth;
         heatlhbar.localScale = heatltbarScale;
+    }
+    public void MoveHorizontal(float direction)
+    {
+        rb.velocity = new Vector2(direction * speed, rb.velocity.y);
+
+        if (direction != 0)
+        {
+            lastDirection = Mathf.Sign(direction);
+            Flip();
+        }
     }
 
     void Update()
@@ -140,14 +151,40 @@ public class jogador : MonoBehaviour
         Debug.Log("Item coletado após cavar!");
     }
 
+    public void MoveLeft()
+    {
+        rb.velocity = new Vector2(-speed, rb.velocity.y);
+        lastDirection = -1f;
+        Flip();
+    }
+
+    public void MoveRight()
+    {
+        rb.velocity = new Vector2(speed, rb.velocity.y);
+        lastDirection = 1f;
+        Flip();
+    }
+
+    public void StopMoving()
+    {
+        rb.velocity = new Vector2(0, rb.velocity.y);
+    }
+    public void Jump()
+    {
+        if (isGrounded)
+        {
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            isGrounded = false;
+        }
+    }
+
     void MovimentarJogador()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
 
-        rb.velocity = new Vector2(moveHorizontal * speed, rb.velocity.y);
-
         if (moveHorizontal != 0)
         {
+            rb.velocity = new Vector2(moveHorizontal * speed, rb.velocity.y);
             lastDirection = Mathf.Sign(moveHorizontal);
             Flip();
         }
