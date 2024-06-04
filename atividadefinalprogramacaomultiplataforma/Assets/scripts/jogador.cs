@@ -177,6 +177,47 @@ public class jogador : MonoBehaviour
             isGrounded = false;
         }
     }
+    public void MoveUp()
+    {
+        if (escadas)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, speed);
+            escalando = true;
+        }
+    }
+
+    public void MoveDown()
+    {
+        if (escadas)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, -speed);
+            escalando = true;
+        }
+    }
+    public void PickupOrDigOrOpen()
+    {
+        // Verifica se está perto do local de cavar e tem a pá
+        if (papegado && Vector2.Distance(transform.position, localCavar.position) < 1.5f)
+        {
+            Cavar(); // Chama a função para cavar
+        }
+        else if (alcapao != null && Vector2.Distance(transform.position, alcapao.transform.position) < alcanceMaximo)
+        {
+            if (chavePegada)
+            {
+                alcapao.SetActive(false); // Abre o alçapão
+                Debug.Log("Alçapão aberto!");
+            }
+            else
+            {
+                StartCoroutine(ShowAviso("Você precisa da chave para abrir o alçapão!"));
+            }
+        }
+        else
+        {
+            PickupItem(); // Chama a função para pegar item
+        }
+    }
 
     void MovimentarJogador()
     {
@@ -221,7 +262,7 @@ public class jogador : MonoBehaviour
         transform.localScale = scale;
     }
 
-    void PickupItem()
+    public void PickupItem()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, pickupRange);
 
@@ -451,16 +492,15 @@ public class jogador : MonoBehaviour
         StartCoroutine(TransicaoParaProximaCena());
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        if (escalando == true)
+        if (escalando)
         {
-            playerrb.gravityScale = 0f;
-            playerrb.velocity = new Vector2(playerrb.velocity.x, vertical * velociadeescada);
+            rb.gravityScale = 0f;
         }
         else
         {
-            playerrb.gravityScale = 10f;
+            rb.gravityScale = 10f;
         }
     }
 

@@ -5,9 +5,14 @@ public class ButtonController : MonoBehaviour
 {
     public jogador playerScript; // Referência ao script jogador
 
+   
+
     private bool moveLeft = false;
     private bool moveRight = false;
     private bool jump = false;
+    private bool pickupOrDigOrOpen = false;
+    private bool moveUp = false;
+    private bool moveDown = false;
 
     public void OnButtonLeftDown()
     {
@@ -34,6 +39,31 @@ public class ButtonController : MonoBehaviour
         jump = true;
     }
 
+    public void OnButtonPickupOrDigOrOpenDown()
+    {
+        pickupOrDigOrOpen = true;
+    }
+
+    public void OnButtonUpDown()
+    {
+        moveUp = true;
+    }
+
+    public void OnButtonUpUp()
+    {
+        moveUp = false;
+    }
+
+    public void OnButtonDownDown()
+    {
+        moveDown = true;
+    }
+
+    public void OnButtonDownUp()
+    {
+        moveDown = false;
+    }
+
     void Update()
     {
         if (moveLeft)
@@ -53,6 +83,22 @@ public class ButtonController : MonoBehaviour
         {
             playerScript.Jump();
             jump = false; // Resetar o estado de pulo
+        }
+
+        if (pickupOrDigOrOpen)
+        {
+            playerScript.PickupOrDigOrOpen();
+            pickupOrDigOrOpen = false; // Resetar o estado de pegar/cavar/abrir
+        }
+
+        if (moveUp)
+        {
+            playerScript.MoveUp();
+        }
+
+        if (moveDown)
+        {
+            playerScript.MoveDown();
         }
     }
 }
