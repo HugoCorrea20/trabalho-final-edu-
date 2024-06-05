@@ -9,14 +9,14 @@ public class MovimentoNavio : MonoBehaviour
     public GameObject balaPrefab; // Prefab da bala
     public Transform pontoDeSpawn; // Ponto de spawn da bala
     public float velocidadeBala = 10f; // Velocidade da bala
-
+    private Rigidbody2D rb;
     private float tempoUltimoTiro;
     private bool primeiroTiroDisparado = false;
     public float tempotiro = 3f;
     public int danorecibido = 10;
     public Transform heatlhbar; //barra verde
     public GameObject heatltbarobject; // objeto pai das barras 
-
+    public float speed = 5f;
     private Vector3 heatltbarScale; //tamanho da barra
     private float heathpercent;   // percetual de vida para o calculo  do tamanho da barra 
 
@@ -31,6 +31,22 @@ public class MovimentoNavio : MonoBehaviour
     {
         heatltbarScale.x = heathpercent * currentHealth;
         heatlhbar.localScale = heatltbarScale;
+    }
+    public void MoveLeft()
+    {
+        rb.velocity = new Vector2(-speed, rb.velocity.y);
+       
+    }
+
+    public void MoveRight()
+    {
+        rb.velocity = new Vector2(speed, rb.velocity.y);
+       
+    }
+
+    public void StopMoving()
+    {
+        rb.velocity = new Vector2(0, rb.velocity.y);
     }
     void Update()
     {

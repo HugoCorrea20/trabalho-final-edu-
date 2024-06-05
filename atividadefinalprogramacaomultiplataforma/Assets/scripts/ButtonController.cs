@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class ButtonController : MonoBehaviour
 {
     public jogador playerScript; // Referência ao script jogador
+    
 
    
 
