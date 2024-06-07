@@ -14,6 +14,7 @@ public class ButtonController : MonoBehaviour
     private bool pickupOrDigOrOpen = false;
     private bool moveUp = false;
     private bool moveDown = false;
+    private bool attack = false;
 
     public void OnButtonLeftDown()
     {
@@ -29,7 +30,10 @@ public class ButtonController : MonoBehaviour
     {
         moveRight = true;
     }
-
+    public void OnButtonAttackDown()
+    {
+        attack = true;
+    }
     public void OnButtonRightUp()
     {
         moveRight = false;
@@ -85,7 +89,11 @@ public class ButtonController : MonoBehaviour
             playerScript.Jump();
             jump = false; // Resetar o estado de pulo
         }
-
+        if (attack)
+        {
+            playerScript.Attack();
+            attack = false; // Resetar o estado de ataque
+        }
         if (pickupOrDigOrOpen)
         {
             playerScript.PickupOrDigOrOpen();

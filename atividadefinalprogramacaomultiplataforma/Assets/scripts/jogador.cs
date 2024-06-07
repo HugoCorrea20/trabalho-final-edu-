@@ -316,7 +316,7 @@ public class jogador : MonoBehaviour
         }
     }
 
-    void Attack()
+    public void Attack()
     {
         if (!PauseMenu.isPaused)
         {

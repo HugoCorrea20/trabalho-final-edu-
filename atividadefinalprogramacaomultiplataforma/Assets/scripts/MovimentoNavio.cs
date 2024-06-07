@@ -26,28 +26,30 @@ public class MovimentoNavio : MonoBehaviour
         currentHealth = maxHealth; // Inicialize a vida atual com a vida máxima
         heatltbarScale = heatlhbar.localScale;
         heathpercent = heatltbarScale.x / currentHealth;
+        rb = GetComponent<Rigidbody2D>(); // Inicialize o Rigidbody2D
     }
+
     void UpdateHealthbar()
     {
         heatltbarScale.x = heathpercent * currentHealth;
         heatlhbar.localScale = heatltbarScale;
     }
+
     public void MoveLeft()
     {
         rb.velocity = new Vector2(-speed, rb.velocity.y);
-       
     }
 
     public void MoveRight()
     {
         rb.velocity = new Vector2(speed, rb.velocity.y);
-       
     }
 
     public void StopMoving()
     {
         rb.velocity = new Vector2(0, rb.velocity.y);
     }
+
     void Update()
     {
         if (!PauseMenu.isPaused) // Verifica se o jogo não está pausado
@@ -73,13 +75,12 @@ public class MovimentoNavio : MonoBehaviour
         transform.Translate(movimento);
     }
 
-    void AtirarBala()
+    public  void AtirarBala()
     {
         GameObject bala = Instantiate(balaPrefab, pontoDeSpawn.position, pontoDeSpawn.rotation);
         bala.GetComponent<Rigidbody2D>().velocity = transform.right * velocidadeBala;
     }
 
-    
     public void TakeDamage(int damageAmount)
     {
         currentHealth -= damageAmount;
@@ -91,14 +92,11 @@ public class MovimentoNavio : MonoBehaviour
         }
     }
 
-   
     void Die()
     {
-        
-         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("balainimigo"))
