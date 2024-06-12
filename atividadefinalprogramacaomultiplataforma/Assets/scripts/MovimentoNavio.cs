@@ -12,7 +12,7 @@ public class MovimentoNavio : MonoBehaviour
     private Rigidbody2D rb;
     private float tempoUltimoTiro;
     private bool primeiroTiroDisparado = false;
-    public float tempotiro = 3f;
+    public float tempotiro = 3f; // Tempo de recarga (cooldown) do tiro
     public int danorecibido = 10;
     public Transform heatlhbar; //barra verde
     public GameObject heatltbarobject; // objeto pai das barras 
@@ -55,16 +55,6 @@ public class MovimentoNavio : MonoBehaviour
         if (!PauseMenu.isPaused) // Verifica se o jogo não está pausado
         {
             MovimentarNavio();
-
-            if (!primeiroTiroDisparado || Time.time - tempoUltimoTiro >= tempotiro)
-            {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    AtirarBala();
-                    tempoUltimoTiro = Time.time;
-                    primeiroTiroDisparado = true;
-                }
-            }
         }
     }
 
@@ -75,10 +65,14 @@ public class MovimentoNavio : MonoBehaviour
         transform.Translate(movimento);
     }
 
-    public  void AtirarBala()
+    public void AtirarBala()
     {
-        GameObject bala = Instantiate(balaPrefab, pontoDeSpawn.position, pontoDeSpawn.rotation);
-        bala.GetComponent<Rigidbody2D>().velocity = transform.right * velocidadeBala;
+        if (Time.time >= tempoUltimoTiro + tempotiro)
+        {
+            GameObject bala = Instantiate(balaPrefab, pontoDeSpawn.position, pontoDeSpawn.rotation);
+            bala.GetComponent<Rigidbody2D>().velocity = transform.right * velocidadeBala;
+            tempoUltimoTiro = Time.time;
+        }
     }
 
     public void TakeDamage(int damageAmount)
